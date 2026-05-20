@@ -1,6 +1,20 @@
 #include "menu.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+
+/*
+ * Compara se prefixo é prefixo de nome, ignorando maiúsculas/minúsculas
+ * Retorna 1 se sim, 0 caso contrário
+ */
+static int compararPrefixoIgnoreCase(const char *nome, const char *prefixo) {
+    for (int i = 0; prefixo[i] != '\0'; i++) {
+        if (tolower((unsigned char)nome[i]) != tolower((unsigned char)prefixo[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 /*
  * Auxilia na busca de times: localiza o nome pelo ID
@@ -25,22 +39,22 @@ void consultarTime(BDTimes *bd) {
 
     printf("\nID Time V E D GM GS S PG\n");
 
-    /* Busca por prefixo: strncmp compara os primeiros strlen(busca) caracteres
-     * Exemplo: buscar "JAV" encontra "JAVAlis" */
+    /* Busca por prefixo ignorando maiúsculas/minúsculas
+     * Exemplo: buscar "jav" encontra "JAVAlis" */
     for (int i = 0; i < bd->quantidade; i++) {
-        if (strncmp(bd->times[i].nome, busca, strlen(busca)) == 0) {
+        if (compararPrefixoIgnoreCase(bd->times[i].nome, busca)) {
             encontrou = 1;
             imprimirTime(bd->times[i]);
         }
     }
 
     if (!encontrou) {
-        printf("Nenhum time encontrado.\n");
+        printf(COR_VERMELHA "Nenhum time encontrado.\n" COR_RESET);
     }
 }
 
 void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
-    char opcao;
+    char opcao[10];
     char busca[50];
     int encontrou = 0;
 
@@ -50,14 +64,14 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
     printf("3 - Por time mandante ou visitante\n");
     printf("4 - Retornar ao menu principal\n");
     printf("\nEscolha uma opcao: ");
-    scanf(" %c", &opcao);
+    scanf("%9s", opcao);
 
-    if (opcao == '4') {
+    if (strcmp(opcao, "4") == 0) {
         return;
     }
 
-    if (opcao < '1' || opcao > '3') {
-        printf("Opcao invalida!\n");
+    if ((strcmp(opcao, "1") != 0) && (strcmp(opcao, "2") != 0) && (strcmp(opcao, "3") != 0)) {
+        printf(COR_VERMELHA "Opcao invalida!\n" COR_RESET);
         return;
     }
 
@@ -73,17 +87,17 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
         /* Determina se a partida corresponde aos criterios da busca */
         int corresponde = 0;
 
-        if (opcao == '1') {
-            if (strncmp(nomeMandante, busca, strlen(busca)) == 0) {
+        if (strcmp(opcao, "1") == 0) {
+            if (compararPrefixoIgnoreCase(nomeMandante, busca)) {
                 corresponde = 1;
             }
-        } else if (opcao == '2') {
-            if (strncmp(nomeVisitante, busca, strlen(busca)) == 0) {
+        } else if (strcmp(opcao, "2") == 0) {
+            if (compararPrefixoIgnoreCase(nomeVisitante, busca)) {
                 corresponde = 1;
             }
-        } else if (opcao == '3') {
-            if (strncmp(nomeMandante, busca, strlen(busca)) == 0 ||
-                strncmp(nomeVisitante, busca, strlen(busca)) == 0) {
+        } else if (strcmp(opcao, "3") == 0) {
+            if (compararPrefixoIgnoreCase(nomeMandante, busca) ||
+                compararPrefixoIgnoreCase(nomeVisitante, busca)) {
                 corresponde = 1;
             }
         }
@@ -101,27 +115,27 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
     }
 
     if (!encontrou) {
-        printf("Nenhuma partida encontrada.\n");
+        printf(COR_VERMELHA "Nenhuma partida encontrada.\n" COR_RESET);
     }
 }
 
 void atualizarPartida(void) {
     /* Stub: Funcionalidade sera implementada em versao futura (Parte II) */
-    printf("Funcionalidade nao implementada nesta versao.\n");
+    printf(COR_VERMELHA "Funcionalidade nao implementada nesta versao.\n" COR_RESET);
 }
 
 void removerPartida(void) {
     /* Stub: Funcionalidade sera implementada em versao futura (Parte II) */
-    printf("Funcionalidade nao implementada nesta versao.\n");
+    printf(COR_VERMELHA "Funcionalidade nao implementada nesta versao.\n" COR_RESET);
 }
 
 void inserirPartida(void) {
     /* Stub: Funcionalidade sera implementada em versao futura (Parte II) */
-    printf("Funcionalidade nao implementada nesta versao.\n");
+    printf(COR_VERMELHA "Funcionalidade nao implementada nesta versao.\n" COR_RESET);
 }
 
 void imprimirClassificacao(BDTimes *bd) {
-    printf("\nImprimindo classificacao...\n");
+    printf(COR_VERDE "\nImprimindo classificacao...\n" COR_RESET);
     printf("\nID Time V E D GM GS S PG\n");
     imprimirTodosTimes(bd);
 }

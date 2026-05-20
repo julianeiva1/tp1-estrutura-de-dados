@@ -1,30 +1,34 @@
 # Campeonato Computacional de Futebol — Parte I
 
-Trabalho pratico de Programacao em C desenvolvido para o Instituto Federal do Espirito Santo — Campus Serra.
+![Linguagem](https://img.shields.io/badge/Linguagem-C-blue.svg)
+![Compilador](https://img.shields.io/badge/Compilador-GCC-green.svg)
+![Status](https://img.shields.io/badge/Status-Concluido-brightgreen.svg)
 
-O objetivo do projeto e implementar um sistema simplificado para gerenciamento de dados de um campeonato computacional de futebol, utilizando arquivos CSV como forma de persistencia e estruturas de dados em memoria para consulta e processamento das informacoes.
+Trabalho prático de Programação em C desenvolvido para a Disciplina de Estrutura de Dados do Instituto Federal do Espírito Santo — Campus Serra.
+
+O objetivo do projeto é implementar um sistema simplificado para gerenciamento de dados de um campeonato computacional de futebol, utilizando arquivos CSV como forma de persistência e estruturas de dados em memória para consulta e processamento das informações.
 
 ## Objetivo
 
-O sistema deve carregar dados de times e partidas a partir de arquivos CSV e permitir a consulta dessas informacoes por meio de um menu interativo no terminal.
+O sistema deve carregar dados de times e partidas a partir de arquivos CSV e permitir a consulta dessas informações por meio de um menu interativo no terminal.
 
 Nesta primeira parte do trabalho, devem ser implementadas as seguintes funcionalidades:
 
 - Consultar time;
 - Consultar partidas;
-- Imprimir tabela de classificacao;
+- Imprimir tabela de classificação;
 - Encerrar o sistema.
 
 As funcionalidades de inserir, atualizar e remover partidas aparecem no menu, mas permanecem desabilitadas nesta etapa do projeto.
 
 ## Campeonato
 
-O campeonato e composto por 10 clubes, identificados por IDs de 0 a 9:
+O campeonato é composto por 10 clubes, identificados por IDs de 0 a 9:
 
 | ID | Time |
 |---:|------|
 | 0 | JAVAlis |
-| 1 | ESCorpioes |
+| 1 | ESCorpiões |
 | 2 | SemCTRL |
 | 3 | GOrilas |
 | 4 | PYthons |
@@ -34,15 +38,15 @@ O campeonato e composto por 10 clubes, identificados por IDs de 0 a 9:
 | 8 | RUSTicos |
 | 9 | REACTivos |
 
-A competicao e disputada em pontos corridos, com 90 partidas registradas no arquivo padrao da entrega.
+A competição é disputada em pontos corridos, com 90 partidas registradas no arquivo padrão da entrega.
 
-## Criterios da tabela de classificacao
+## Critérios da tabela de classificação
 
-A classificacao dos times considera os seguintes dados:
+A classificação dos times considera os seguintes dados:
 
-| Sigla | Descricao |
+| Sigla | Descrição |
 |------|-----------|
-| V | Vitorias |
+| V | Vitórias |
 | E | Empates |
 | D | Derrotas |
 | GM | Gols marcados |
@@ -50,13 +54,13 @@ A classificacao dos times considera os seguintes dados:
 | S | Saldo de gols |
 | PG | Pontos ganhos |
 
-O saldo de gols e calculado por:
+O saldo de gols é calculado por:
 
 ```txt
 S = GM - GS
 ```
 
-Os pontos ganhos sao calculados por:
+Os pontos ganhos são calculados por:
 
 ```txt
 PG = 3 * V + E
@@ -66,7 +70,9 @@ PG = 3 * V + E
 
 ### 1. Consultar time
 
-Permite buscar um ou mais times a partir do nome ou prefixo informado pelo usuario.
+Permite buscar um ou mais times a partir do nome ou prefixo informado pelo usuário.
+
+A busca por prefixo ignora diferenças entre letras maiúsculas e minúsculas. Por exemplo, `j`, `J`, `jav` e `JAV` encontram o time `JAVAlis`.
 
 A consulta deve exibir os dados de desempenho do time:
 
@@ -80,7 +86,7 @@ Caso nenhum time seja encontrado, o sistema deve exibir uma mensagem informativa
 
 Permite consultar partidas utilizando o nome do time mandante, do time visitante ou de ambos.
 
-Os modos de consulta previstos sao:
+Os modos de consulta previstos são:
 
 ```txt
 1 - Por time mandante
@@ -89,21 +95,21 @@ Os modos de consulta previstos sao:
 4 - Retornar ao menu principal
 ```
 
-O sistema deve exibir as partidas correspondentes ao criterio informado.
+O sistema deve exibir as partidas correspondentes ao critério informado. A busca também ignora diferenças entre maiúsculas e minúsculas.
 
-### 3. Imprimir tabela de classificacao
+### 3. Imprimir tabela de classificação
 
-Imprime todos os times cadastrados com suas estatisticas acumuladas, calculadas com base nas partidas carregadas.
+Imprime todos os times cadastrados com suas estatísticas acumuladas, calculadas com base nas partidas carregadas.
 
-Nesta primeira parte do trabalho, a tabela nao precisa ser ordenada por pontuacao. A impressao segue a ordem dos IDs dos times.
+Nesta primeira parte do trabalho, a tabela não precisa ser ordenada por pontuação. A impressão segue a ordem dos IDs dos times.
 
 ### 4. Sair
 
-Encerra a execucao do sistema.
+Encerra a execução do sistema. O programa só encerra quando o usuário digita exatamente `q` ou `Q`.
 
 ## Funcionalidades desabilitadas nesta etapa
 
-As opcoes abaixo aparecem no menu, mas nao sao implementadas nesta primeira parte:
+As opções abaixo aparecem no menu, mas não são implementadas nesta primeira parte:
 
 ```txt
 3 - Atualizar partida
@@ -111,46 +117,59 @@ As opcoes abaixo aparecem no menu, mas nao sao implementadas nesta primeira part
 5 - Inserir partida
 ```
 
-Essas funcionalidades serao tratadas em uma etapa futura do trabalho.
+Essas funcionalidades serão tratadas em uma etapa futura do trabalho.
 
 ## Estrutura do projeto
 
 Estrutura do projeto:
 
 ```txt
-tp1-campeonato-futebol-c/
+tp1-campeonato-futebol-c-main/
 │
-├── main.c
-├── Makefile
 ├── README.md
+├── Makefile
 │
-├── time.h
-├── time.c
+├── src/
+│   ├── main.c
+│   │
+│   ├── time/
+│   │   ├── time.h
+│   │   └── time.c
+│   │
+│   ├── partida/
+│   │   ├── partida.h
+│   │   └── partida.c
+│   │
+│   ├── bd_time/
+│   │   ├── bd_time.h
+│   │   └── bd_time.c
+│   │
+│   ├── bd_partida/
+│   │   ├── bd_partida.h
+│   │   └── bd_partida.c
+│   │
+│   └── menu/
+│       ├── menu.h
+│       └── menu.c
 │
-├── partida.h
-├── partida.c
-│
-├── bd_time.h
-├── bd_time.c
-│
-├── bd_partida.h
-├── bd_partida.c
-│
-├── menu.h
-├── menu.c
-│
-├── times.csv
-├── bd_partidas.csv          (criado para entrega)
-├── partidas_vazio.csv       (fornecido pelo professor)
-├── partidas_parcial.csv     (fornecido pelo professor)
-└── partidas_completo.csv    (fornecido pelo professor)
+└── data/
+    ├── times.csv
+    ├── bd_partidas.csv          (criado para entrega)
+    ├── partidas_vazio.csv       (fornecido pelo professor)
+    ├── partidas_parcial.csv     (fornecido pelo professor)
+    └── partidas_completo.csv    (fornecido pelo professor)
 ```
+
+**Sobre a organização:**
+
+- `src/` — contém todo o código-fonte, organizado por módulo (TAD)
+- `data/` — contém todos os arquivos CSV
 
 **Sobre os arquivos CSV:**
 
-- `times.csv` — fornecido pelo professor
-- `bd_partidas.csv` — criado para a entrega com todas as 90 partidas
-- `partidas_vazio.csv`, `partidas_parcial.csv`, `partidas_completo.csv` — fornecidos pelo professor como cenarios de teste
+- `data/times.csv` — fornecido pelo professor
+- `data/bd_partidas.csv` — criado para a entrega com todas as 90 partidas
+- `data/partidas_vazio.csv`, `data/partidas_parcial.csv`, `data/partidas_completo.csv` — fornecidos pelo professor como cenários de teste
 
 ## TADs utilizados
 
@@ -162,40 +181,40 @@ Armazena:
 
 - ID;
 - Nome;
-- Vitorias;
+- Vitórias;
 - Empates;
 - Derrotas;
 - Gols marcados;
 - Gols sofridos.
 
-Tambem possui funcoes para:
+Também possui funções para:
 
 - Inicializar um time;
 - Calcular saldo de gols;
 - Calcular pontos ganhos;
 - Imprimir os dados do time.
 
-O saldo de gols e os pontos ganhos sao calculados a partir dos dados acumulados:
+O saldo de gols e os pontos ganhos são calculados a partir dos dados acumulados:
 
 ```txt
 Saldo = gols marcados - gols sofridos
-Pontos = 3 * vitorias + empates
+Pontos = 3 * vitórias + empates
 ```
 
 ### TAD BDTimes
 
-Gerencia a colecao de times carregados do arquivo CSV.
+Gerencia a coleção de times carregados do arquivo CSV.
 
 Responsabilidades implementadas:
 
-- Inicializar o banco de times em memoria;
+- Inicializar o banco de times em memória;
 - Adicionar um time ao vetor de times;
 - Buscar um time por ID;
 - Carregar os times a partir do arquivo `times.csv`;
 - Imprimir todos os times carregados;
-- Calcular a classificacao com base nas partidas carregadas.
+- Calcular a classificação com base nas partidas carregadas.
 
-A estrutura utiliza um vetor estatico com capacidade para 10 times, pois o campeonato possui exatamente 10 clubes.
+A estrutura utiliza um vetor estático com capacidade para 10 times, pois o campeonato possui exatamente 10 clubes.
 
 ### TAD Partida
 
@@ -209,49 +228,49 @@ Armazena:
 - Gols do Time1;
 - Gols do Time2.
 
-Tambem possui funcoes para:
+Também possui funções para:
 
 - Inicializar uma partida;
 - Imprimir os dados de uma partida.
 
 ### TAD BDPartidas
 
-Gerencia a colecao de partidas carregadas dos arquivos CSV.
+Gerencia a coleção de partidas carregadas dos arquivos CSV.
 
 Responsabilidades implementadas:
 
 - Carregar partidas do arquivo CSV;
-- Armazenar partidas em memoria;
+- Armazenar partidas em memória;
 - Consultar partidas por ID;
 - Imprimir todas as partidas;
 - Tratamento de quebras de linha ao carregar os registros do CSV.
 
-A estrutura utiliza um vetor estatico com capacidade para 100 partidas.
+A estrutura utiliza um vetor estático com capacidade para 100 partidas.
 
-### Funcao calcularClassificacao
+### Função calcularClassificacao
 
-Implementada em `bd_time.c`, esta funcao:
+Implementada em `bd_time.c`, esta função:
 
 - Percorre todas as partidas carregadas;
-- Atualiza vitorias, empates e derrotas para cada time;
+- Atualiza vitórias, empates e derrotas para cada time;
 - Atualiza gols marcados e gols sofridos;
-- Reseta as estatisticas antes do calculo (garantindo consistencia);
-- Permite a impressao da tabela de classificacao com dados atualizados.
+- Reseta as estatísticas antes do cálculo (garantindo consistência);
+- Permite a impressão da tabela de classificação com dados atualizados.
 
-### Modulo menu
+### Módulo menu
 
-Implementado em `menu.c` e `menu.h`, fornece todas as funcionalidades de interacao com o usuario:
+Implementado em `menu.c` e `menu.h`, fornece todas as funcionalidades de interação com o usuário:
 
 - `consultarTime()` — busca times por prefixo;
 - `consultarPartidas()` — submenu para busca de partidas (mandante, visitante, ambos);
-- `imprimirClassificacao()` — exibe tabela de classificacao atualizada;
-- `atualizarPartida()`, `removerPartida()`, `inserirPartida()` — stubs com mensagem de "nao implementado";
+- `imprimirClassificacao()` — exibe tabela de classificação atualizada;
+- `atualizarPartida()`, `removerPartida()`, `inserirPartida()` — stubs com mensagem de "não implementado";
 
 ## Arquivos CSV
 
 O sistema utiliza arquivos CSV para simular um banco de dados.
 
-Os arquivos de dados seguem o formato indicado no enunciado. O arquivo de times contem os IDs e nomes dos clubes, enquanto os arquivos de partidas contem os IDs dos times envolvidos e os respectivos gols.
+Os arquivos de dados seguem o formato indicado no enunciado. O arquivo de times contém os IDs e nomes dos clubes, enquanto os arquivos de partidas contêm os IDs dos times envolvidos e os respectivos gols.
 
 ### Arquivo de times
 
@@ -266,23 +285,23 @@ Formato:
 ```csv
 ID,Time
 0,JAVAlis
-1,ESCorpioes
+1,ESCorpiões
 2,SemCTRL
 ```
 
-A primeira linha e o cabecalho e e ignorada durante a leitura.
+A primeira linha é o cabeçalho e é ignorada durante a leitura.
 
 ### Arquivos de partidas
 
-O arquivo padrao carregado pelo sistema e **`bd_partidas.csv`**, criado para esta entrega, contendo todas as 90 partidas do campeonato.
+O arquivo padrão carregado pelo sistema é **`bd_partidas.csv`**, criado para esta entrega, contendo todas as 90 partidas do campeonato.
 
-Os arquivos `partidas_vazio.csv`, `partidas_parcial.csv` e `partidas_completo.csv` foram fornecidos pelo professor e foram mantidos conforme recebidos. Eles servem como cenarios de teste alternativos:
+Os arquivos `partidas_vazio.csv`, `partidas_parcial.csv` e `partidas_completo.csv` foram fornecidos pelo professor e foram mantidos conforme recebidos. Eles servem como cenários de teste alternativos:
 
 ```txt
-bd_partidas.csv          (90 partidas) — arquivo padrao da entrega (criado para esta Parte I)
-partidas_vazio.csv       (0 partidas)  — cenario de teste fornecido pelo professor
-partidas_parcial.csv     (45 partidas) — cenario de teste fornecido pelo professor
-partidas_completo.csv    (90 partidas) — cenario de teste fornecido pelo professor
+bd_partidas.csv          (90 partidas) — arquivo padrão da entrega (criado para esta Parte I)
+partidas_vazio.csv       (0 partidas)  — cenário de teste fornecido pelo professor
+partidas_parcial.csv     (45 partidas) — cenário de teste fornecido pelo professor
+partidas_completo.csv    (90 partidas) — cenário de teste fornecido pelo professor
 ```
 
 **Formato dos arquivos:**
@@ -295,45 +314,53 @@ ID,Time1ID,Time2ID,GolsTime1,GolsTime2
 1,9,1,2,5
 ```
 
-O programa ignora a primeira linha do CSV (cabecalho), portanto os nomes exatos das colunas nao interferem na leitura dos dados. A interpretacao e feita pela ordem: ID (primeiro), Time1 mandante (segundo), Time2 visitante (terceiro), gols Time1 (quarto), gols Time2 (quinto).
+O programa ignora a primeira linha do CSV (cabeçalho), portanto os nomes exatos das colunas não interferem na leitura dos dados. A interpretação é feita pela ordem: ID (primeiro), Time1 mandante (segundo), Time2 visitante (terceiro), gols Time1 (quarto), gols Time2 (quinto).
 
 **Como usar arquivos diferentes:**
 
-Para testar outro cenario, altere em `main.c` a chamada da funcao `carregarPartidasCSV()`, substituindo `bd_partidas.csv` pelo arquivo desejado.
+Para testar outro cenário, altere em `src/main.c` a chamada da função `carregarPartidasCSV()`, substituindo `data/bd_partidas.csv` pelo arquivo desejado, por exemplo: `data/partidas_vazio.csv`, `data/partidas_parcial.csv` ou `data/partidas_completo.csv`.
 
-## Como compilar
+## Como compilar e executar no Linux
 
-Para compilar o projeto, execute no terminal:
+No terminal, dentro da pasta do projeto, compile com:
 
 ```bash
 make
 ```
 
-Esse comando gera o executavel:
-
-```txt
-campeonato
-```
-
-## Como executar
-
-Apos compilar, execute:
+Depois execute:
 
 ```bash
 ./campeonato
 ```
 
-## Como limpar os arquivos de compilacao
-
-Para remover os arquivos `.o` e o executavel gerado, execute:
+Para remover os arquivos de compilação (`.o`) e o executável gerado:
 
 ```bash
 make clean
 ```
 
+## Como compilar e executar no Windows pelo CMD
+
+Para executar pelo Prompt de Comando do Windows, é necessário ter o GCC instalado e configurado no PATH, por exemplo por meio do MinGW ou MSYS2.
+
+No CMD, dentro da pasta do projeto, compile com:
+
+```cmd
+gcc -Wall -Wextra -std=c11 -I src/time -I src/partida -I src/bd_time -I src/bd_partida -I src/menu -o campeonato.exe src/main.c src/time/time.c src/partida/partida.c src/bd_time/bd_time.c src/bd_partida/bd_partida.c src/menu/menu.c
+```
+
+Depois execute:
+
+```cmd
+campeonato.exe
+```
+
+Observação: o `Makefile` foi preparado para ambiente Linux. No Windows, recomenda-se usar o comando `gcc` acima diretamente no CMD, ou executar o `make` por um ambiente compatível, como Git Bash, MSYS2 ou WSL.
+
 ## Exemplo de uso
 
-Ao executar o programa, sera exibido o menu:
+Ao executar o programa, será exibido o menu:
 
 ```txt
 Sistema de Gerenciamento de Partidas
@@ -348,18 +375,18 @@ Q - Sair
 Escolha uma opcao: 
 ```
 
-### Opcao 6 — Tabela de classificacao
+### Opção 6 — Tabela de classificação
 
-- A opcao `6` imprime a tabela de classificacao dos times com estatisticas calculadas com base nas partidas carregadas.
+- A opção `6` imprime a tabela de classificação dos times com estatísticas calculadas com base nas partidas carregadas.
 
-- Se for utilizado o arquivo `bd_partidas.csv` (padrao), sera exibida a classificacao com as estatisticas acumuladas:
+- Se for utilizado o arquivo `bd_partidas.csv` (padrão), será exibida a classificação com as estatísticas acumuladas:
 
 ```txt
 Imprimindo classificacao...
 
 ID Time V E D GM GS S PG
 0 JAVAlis         13 3 2 58 30 28 42
-1 ESCorpioes     10 2 6 55 39 16 32
+1 ESCorpiões     10 2 6 55 39 16 32
 2 SemCTRL         11 2 5 43 34 9 35
 3 GOrilas         7 0 11 40 50 -10 21
 4 PYthons         8 2 8 47 40 7 26
@@ -370,14 +397,14 @@ ID Time V E D GM GS S PG
 9 REACTivos       8 2 8 34 38 -4 26
 ```
 
-- Se for utilizado o arquivo `partidas_vazio.csv`, os times aparecerao com todas as estatisticas zeradas:
+- Se for utilizado o arquivo `partidas_vazio.csv`, os times aparecerão com todas as estatísticas zeradas:
 
 ```txt
 Imprimindo classificacao...
 
 ID Time V E D GM GS S PG
 0 JAVAlis         0 0 0 0 0 0 0
-1 ESCorpioes      0 0 0 0 0 0 0
+1 ESCorpiões      0 0 0 0 0 0 0
 2 SemCTRL         0 0 0 0 0 0 0
 3 GOrilas         0 0 0 0 0 0 0
 4 PYthons         0 0 0 0 0 0 0
@@ -390,33 +417,39 @@ ID Time V E D GM GS S PG
 
 - Para usar um arquivo diferente, edite a chamada de `carregarPartidasCSV()` em `main.c`, substituindo `"bd_partidas.csv"` pelo arquivo desejado.
 
+## Integrantes do Projeto
+
+| Aluno | GitHub |
+|-------|--------|
+| Julia Neiva | [julianeiva1](https://github.com/julianeiva1) |
+
 ## Ambiente recomendado
 
 O projeto deve ser desenvolvido e testado preferencialmente em ambiente Linux.
 
-Ambiente de referencia indicado no enunciado:
+Ambiente de referência indicado no enunciado:
 
 ```txt
 Ubuntu 22.04
 GCC 11
 ```
 
-## Decisoes de implementacao
+## Decisões de implementação
 
-As principais decisoes de implementacao tomadas ate o momento sao:
+As principais decisões de implementação tomadas até o momento são:
 
 - Utilizar linguagem C;
-- Organizar o codigo em modulos;
+- Organizar o código em módulos;
 - Manter o programa principal em `main.c`;
 - Representar times e partidas por meio de `structs`;
 - Utilizar TADs para separar responsabilidades;
 - Separar cada TAD em um arquivo `.h` e um arquivo `.c`;
 - Utilizar arquivos CSV como fonte de dados;
-- Ignorar o cabecalho dos arquivos CSV durante a leitura;
-- Utilizar vetor estatico para armazenar os times, pois o campeonato possui 10 clubes;
+- Ignorar o cabeçalho dos arquivos CSV durante a leitura;
+- Utilizar vetor estático para armazenar os times, pois o campeonato possui 10 clubes;
 - Utilizar os campos `time1` e `time2` na estrutura de partidas para armazenar os IDs dos times, conforme os campos `Time1ID` e `Time2ID` dos arquivos CSV;
-- Calcular saldo de gols e pontos ganhos por meio de funcoes proprias do TAD `Time`;
-- Manter as opcoes de insercao, atualizacao e remocao desabilitadas nesta primeira etapa.
+- Calcular saldo de gols e pontos ganhos por meio de funções próprias do TAD `Time`;
+- Manter as opções de inserção, atualização e remoção desabilitadas nesta primeira etapa.
 
 ## Status atual
 
@@ -424,33 +457,34 @@ As principais decisoes de implementacao tomadas ate o momento sao:
 
 ### Funcionalidades implementadas:
 
-- Menu principal com todas as opcoes;
-- Leitura da opcao do usuario;
-- Encerramento do sistema (Q);
-- Opcoes 3, 4 e 5 desabilitadas (com mensagem "nao implementada nesta versao");
+- Menu principal com todas as opções;
+- Leitura da opção do usuário;
+- Encerramento do sistema (apenas com `q` ou `Q`);
+- Opções 3, 4 e 5 desabilitadas (com mensagem "não implementada nesta versão");
 - TAD `Time`;
 - TAD `Partida`;
 - TAD `BDTimes`;
 - TAD `BDPartidas`;
 - Leitura do arquivo `times.csv`;
 - Leitura do arquivo de partidas configurado no `main.c`, atualmente `bd_partidas.csv` (90 partidas);
-- Calculo da classificacao com base nas partidas (`calcularClassificacao()`);
-- Consulta de time por prefixo;
+- Cálculo da classificação com base nas partidas (`calcularClassificacao()`);
+- Consulta de time por prefixo (case-insensitive);
 - Consulta de partidas (mandante, visitante, ambos);
-- Impressao da tabela de classificacao com estatisticas atualizadas;
-- Integracao completa das funcionalidades ao menu;
-- Makefile com compilacao modularizada;
-- Leitura e exibicao dos nomes dos times, incluindo acentos, quando os arquivos e o terminal utilizam codificacao compativel;
-- Testes com os tres cenarios de partidas (vazio, parcial, completo).
+- Impressão da tabela de classificação com estatísticas atualizadas;
+- Integração completa das funcionalidades ao menu;
+- Makefile com compilação modularizada;
+- Leitura e exibição dos nomes dos times, incluindo acentos, quando os arquivos e o terminal utilizam codificação compatível;
+- Testes com os três cenários de partidas (vazio, parcial, completo).
 
-### Observacoes sobre a implementacao:
+### Observações sobre a implementação:
 
-- A tabela de classificacao segue a ordem dos IDs dos times conforme especificado para a Parte I;
-- O arquivo de partidas padrao utilizado e `bd_partidas.csv` (90 partidas). Para usar outro arquivo, edite a chamada de `carregarPartidasCSV()` em `main.c`, substituindo `"bd_partidas.csv"` pelo arquivo desejado;
-- Cenarios de teste estao disponiveis:
-  - `bd_partidas.csv` — arquivo padrao da entrega com 90 partidas
-  - `partidas_vazio.csv` — arquivo sem partidas (testa tabela zerada)
-  - `partidas_parcial.csv` — arquivo com 45 partidas (testa campeonato parcial)
-  - `partidas_completo.csv` — arquivo com 90 partidas (cenario de teste alternativo)
-- O programa foi testado em ambiente Linux com GCC 11 e esta livre de warnings, erros de segmentacao e problemas de leitura de CSV;
-- Os nomes dos times, incluindo acentos, sao lidos e exibidos corretamente quando os arquivos e o terminal utilizam codificacao compativel;
+- A tabela de classificação segue a ordem dos IDs dos times conforme especificado para a Parte I;
+- O arquivo de partidas padrão utilizado é `data/bd_partidas.csv` (90 partidas). Para usar outro arquivo, edite a chamada de `carregarPartidasCSV()` em `src/main.c`, substituindo `"data/bd_partidas.csv"` pelo arquivo desejado (por exemplo: `"data/partidas_vazio.csv"`);
+- Cenários de teste estão disponíveis na pasta `data/`:
+  - `data/bd_partidas.csv` — arquivo padrão da entrega com 90 partidas
+  - `data/partidas_vazio.csv` — arquivo sem partidas (testa tabela zerada)
+  - `data/partidas_parcial.csv` — arquivo com 45 partidas (testa campeonato parcial)
+  - `data/partidas_completo.csv` — arquivo com 90 partidas (cenário de teste alternativo)
+- A busca por prefixo no módulo menu ignora diferenças entre maiúsculas e minúsculas;
+- O programa foi testado em ambiente Linux com GCC 11 e está livre de warnings, erros de segmentação e problemas de leitura de CSV;
+- Os nomes dos times, incluindo acentos, são lidos e exibidos corretamente quando os arquivos e o terminal utilizam codificação compatível;

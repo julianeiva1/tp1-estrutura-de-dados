@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "bd_time.h"
 #include "bd_partida.h"
 #include "menu.h"
@@ -13,26 +14,27 @@ int main()
     BDTimes bd_times;
     BDPartidas bd_partidas;
 
-    if (!carregarTimesCSV(&bd_times, "times.csv")) {
-        printf("Erro ao carregar times!\n");
+    if (!carregarTimesCSV(&bd_times, "data/times.csv")) {
+        printf(COR_VERMELHA "Erro ao carregar times!\n" COR_RESET);
         return 1;
     }
 
     /*
-     * Arquivo padrao: bd_partidas.csv (90 partidas)
+     * Arquivo padrao: data/bd_partidas.csv (90 partidas)
      * Arquivos alternativos para teste:
-     * - "partidas_vazio.csv" (sem partidas)
-     * - "partidas_parcial.csv" (45 partidas)
-     * - "partidas_completo.csv" (90 partidas)
+     * - "data/partidas_vazio.csv" (sem partidas)
+     * - "data/partidas_parcial.csv" (45 partidas)
+     * - "data/partidas_completo.csv" (90 partidas)
      */
-    if (!carregarPartidasCSV(&bd_partidas, "bd_partidas.csv")) {
-        printf("Erro ao carregar partidas!\n");
+    if (!carregarPartidasCSV(&bd_partidas, "data/bd_partidas.csv")) {
+        printf(COR_VERMELHA "Erro ao carregar partidas!\n" COR_RESET);
         return 1;
     }
 
     calcularClassificacao(&bd_times, &bd_partidas);
 
-    char opcao;
+    char opcao[10];
+    int sair = 0;
 
     do {
         printf("\nSistema de Gerenciamento de Partidas\n");
@@ -45,9 +47,14 @@ int main()
         printf("Q - Sair\n");
 
         printf("\nEscolha uma opcao: ");
-        scanf(" %c", &opcao);
+        scanf("%9s", opcao);
 
-        switch (opcao) {
+        if (strlen(opcao) != 1) {
+            printf(COR_VERMELHA "Opcao invalida!\n" COR_RESET);
+            continue;
+        }
+
+        switch (opcao[0]) {
             case '1':
                 consultarTime(&bd_times);
                 break;
@@ -74,14 +81,15 @@ int main()
 
             case 'Q':
             case 'q':
-                printf("Saindo do sistema...\n");
+                printf(COR_VERDE "Saindo do sistema...\n" COR_RESET);
+                sair = 1;
                 break;
 
             default:
-                printf("Opcao invalida!\n");
+                printf(COR_VERMELHA "Opcao invalida!\n" COR_RESET);
         }
 
-    } while (opcao != 'Q' && opcao != 'q');
+    } while (!sair);
 
     return 0;
 }
