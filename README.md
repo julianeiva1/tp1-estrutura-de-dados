@@ -123,7 +123,7 @@ Essas funcionalidades serão tratadas em uma etapa futura do trabalho.
 Estrutura do projeto:
 
 ```txt
-tp1-campeonato-futebol-c-main/
+tp1-estrutura-de-dados/
 │
 ├── README.md
 ├── Makefile
