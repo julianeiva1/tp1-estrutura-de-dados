@@ -1,7 +1,6 @@
 # Campeonato Computacional de Futebol — Parte I
 
 ![Linguagem](https://img.shields.io/badge/Linguagem-C-blue.svg)
-![Compilador](https://img.shields.io/badge/Compilador-GCC-green.svg)
 ![Status](https://img.shields.io/badge/Status-Concluido-brightgreen.svg)
 
 Trabalho prático de Programação em C desenvolvido para a Disciplina de Estrutura de Dados do Instituto Federal do Espírito Santo — Campus Serra.
@@ -422,6 +421,7 @@ ID Time V E D GM GS S PG
 | Aluno | GitHub |
 |-------|--------|
 | Julia Neiva | [julianeiva1](https://github.com/julianeiva1) |
+| Eduarda Ferrari | [julianeiva1](https://github.com/julianeiva1) |
 
 ## Ambiente recomendado
 
