@@ -7,7 +7,7 @@
 #define MAX_TIMES 10
 
 /*
- * TAD BDTimes: Gerenciador da colecao de times em memoria
+ * TAD BDTimes: Gerenciador da colecao de times em memoria (opaco)
  * A definicao completa da struct esta em bd_time.c
  * Armazena os times carregados do arquivo CSV usando alocacao dinamica
  */

@@ -5,7 +5,7 @@
 #include "bd_partida.h"
 
 /*
- * Definicao opaca da struct BDTimes 
+ * Definicao opaca da struct BDTimes (privada a este arquivo)
  * Armazena um array de ponteiros para Times alocados dinamicamente
  */
 struct bd_times {

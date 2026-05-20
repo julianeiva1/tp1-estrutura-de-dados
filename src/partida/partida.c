@@ -3,7 +3,7 @@
 #include "partida.h"
 
 /*
- * Definicao da struct Partida 
+ * Definicao opaca da struct Partida (privada a este arquivo)
  */
 struct partida {
     int id;

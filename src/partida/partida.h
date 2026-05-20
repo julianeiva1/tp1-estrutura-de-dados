@@ -2,7 +2,7 @@
 #define PARTIDA_H
 
 /*
- * TAD Partida: Representa uma partida do campeonato
+ * TAD Partida: Representa uma partida do campeonato (opaco)
  * A definicao completa da struct esta em partida.c
  * A interface expoe apenas getters e funcoes utilitarias
  */

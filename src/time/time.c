@@ -4,7 +4,7 @@
 #include "time.h"
 
 /*
- * Definicao da struct Time 
+ * Definicao opaca da struct Time (privada a este arquivo)
  */
 struct time {
     int id;

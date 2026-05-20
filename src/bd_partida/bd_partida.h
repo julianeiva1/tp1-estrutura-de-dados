@@ -7,7 +7,7 @@
 #define MAX_PARTIDAS 100
 
 /*
- * TAD BDPartidas: Gerenciador da colecao de partidas em memoria 
+ * TAD BDPartidas: Gerenciador da colecao de partidas em memoria (opaco)
  * A definicao completa da struct esta em bd_partida.c
  * Armazena as partidas carregadas do arquivo CSV usando alocacao dinamica
  */
