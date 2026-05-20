@@ -421,7 +421,7 @@ ID Time V E D GM GS S PG
 | Aluno | GitHub |
 |-------|--------|
 | Julia Neiva | [julianeiva1](https://github.com/julianeiva1) |
-| Eduarda Ferrari | [julianeiva1](https://github.com/julianeiva1) |
+| Eduarda Ferrari | [dudaferrari](https://github.com/dudaferrari) |
 
 ## Ambiente recomendado
 
