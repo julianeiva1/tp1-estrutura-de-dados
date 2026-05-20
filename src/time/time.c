@@ -1,12 +1,79 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "time.h"
 
-void inicializarTime(Time *time, int id, const char *nome) {
+/*
+ * Definicao opaca da struct Time (privada a este arquivo)
+ */
+struct time {
+    int id;
+    char nome[TAM_NOME_TIME];
+    int vitorias;
+    int empates;
+    int derrotas;
+    int golsMarcados;
+    int golsSofridos;
+};
+
+/* === GERENCIAMENTO DE MEMORIA === */
+
+Time *criarTime(int id, const char *nome) {
+    Time *time = (Time *)malloc(sizeof(Time));
+    if (time == NULL) {
+        return NULL;
+    }
+    
     time->id = id;
     strncpy(time->nome, nome, TAM_NOME_TIME);
     time->nome[TAM_NOME_TIME - 1] = '\0';
+    
+    time->vitorias = 0;
+    time->empates = 0;
+    time->derrotas = 0;
+    time->golsMarcados = 0;
+    time->golsSofridos = 0;
+    
+    return time;
+}
 
+void liberarTime(Time *time) {
+    free(time);
+}
+
+/* === GETTERS === */
+
+int obterIdTime(Time *time) {
+    return time->id;
+}
+
+const char *obterNomeTime(Time *time) {
+    return time->nome;
+}
+
+int obterVitorias(Time *time) {
+    return time->vitorias;
+}
+
+int obterEmpates(Time *time) {
+    return time->empates;
+}
+
+int obterDerrotas(Time *time) {
+    return time->derrotas;
+}
+
+int obterGolsMarcados(Time *time) {
+    return time->golsMarcados;
+}
+
+int obterGolsSofridos(Time *time) {
+    return time->golsSofridos;
+}
+
+/* === SETTERS === */
+
+void zerarEstatisticasTime(Time *time) {
     time->vitorias = 0;
     time->empates = 0;
     time->derrotas = 0;
@@ -14,23 +81,45 @@ void inicializarTime(Time *time, int id, const char *nome) {
     time->golsSofridos = 0;
 }
 
-int calcularSaldoGols(Time time) {
-    return time.golsMarcados - time.golsSofridos;
+void adicionarGolsMarcados(Time *time, int gols) {
+    time->golsMarcados += gols;
 }
 
-int calcularPontos(Time time) {
-    return (time.vitorias * 3) + time.empates;
+void adicionarGolsSofridos(Time *time, int gols) {
+    time->golsSofridos += gols;
 }
 
-void imprimirTime(Time time) {
+void adicionarVitoria(Time *time) {
+    time->vitorias++;
+}
+
+void adicionarEmpate(Time *time) {
+    time->empates++;
+}
+
+void adicionarDerrota(Time *time) {
+    time->derrotas++;
+}
+
+/* === FUNCOES UTILITARIAS === */
+
+int calcularSaldoGols(Time *time) {
+    return time->golsMarcados - time->golsSofridos;
+}
+
+int calcularPontos(Time *time) {
+    return (time->vitorias * 3) + time->empates;
+}
+
+void imprimirTime(Time *time) {
     printf("%d %-15s %d %d %d %d %d %d %d\n",
-           time.id,
-           time.nome,
-           time.vitorias,
-           time.empates,
-           time.derrotas,
-           time.golsMarcados,
-           time.golsSofridos,
+           time->id,
+           time->nome,
+           time->vitorias,
+           time->empates,
+           time->derrotas,
+           time->golsMarcados,
+           time->golsSofridos,
            calcularSaldoGols(time),
            calcularPontos(time));
 }

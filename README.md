@@ -172,11 +172,19 @@ tp1-estrutura-de-dados/
 
 ## TADs utilizados
 
+- **Definição privada**: A definição completa de cada `struct` fica no arquivo `.c` correspondente, inacessível ao resto do programa.
+- **Interface pública**: Apenas a declaração forward (`typedef struct {...} Nome;`) aparece no arquivo `.h`.
+- **Encapsulamento**: O acesso aos campos é controlado exclusivamente através de funções de interface (getters, setters).
+- **Benefícios**: 
+  - Separação clara entre interface e implementação;
+  - Mudanças na estrutura interna não afetam código cliente;
+  - Abstração e segurança de dados.
+
 ### TAD Time
 
 Representa uma equipe do campeonato.
 
-Armazena:
+Armazena internamente:
 
 - ID;
 - Nome;
@@ -186,40 +194,43 @@ Armazena:
 - Gols marcados;
 - Gols sofridos.
 
-Também possui funções para:
+**Interface pública (definida em `time.h`):**
 
-- Inicializar um time;
-- Calcular saldo de gols;
-- Calcular pontos ganhos;
-- Imprimir os dados do time.
+- `Time *criarTime(int id, const char *nome)` — aloca e inicializa um novo time;
+- `void liberarTime(Time *time)` — libera a memória alocada;
+- Getters: `obterIdTime()`, `obterNomeTime()`, `obterVitorias()`, etc.;
+- Setters: `zerarEstatisticasTime()`, `adicionarGolsMarcados()`, `adicionarVitoria()`, etc.;
+- Utilitárias: `calcularSaldoGols()`, `calcularPontos()`, `imprimirTime()`.
 
-O saldo de gols e os pontos ganhos são calculados a partir dos dados acumulados:
-
-```txt
-Saldo = gols marcados - gols sofridos
-Pontos = 3 * vitórias + empates
-```
+A alocação dinâmica (`malloc`) é usada para criar instâncias de time.
 
 ### TAD BDTimes
 
 Gerencia a coleção de times carregados do arquivo CSV.
 
-Responsabilidades implementadas:
+**Interface pública:**
 
-- Inicializar o banco de times em memória;
-- Adicionar um time ao vetor de times;
-- Buscar um time por ID;
-- Carregar os times a partir do arquivo `times.csv`;
-- Imprimir todos os times carregados;
-- Calcular a classificação com base nas partidas carregadas.
+- `BDTimes *criarBDTimes(void)` — aloca e inicializa um novo banco de times;
+- `void liberarBDTimes(BDTimes *bd)` — libera todos os times armazenados e o banco;
+- `int adicionarTime(BDTimes *bd, Time *time)` — adiciona um time já alocado;
+- `Time* buscarTimePorId(BDTimes *bd, int id)` — busca um time por ID;
+- `int obterQuantidadeTimes(BDTimes *bd)` — retorna número de times cadastrados;
+- `Time *obterTimePorIndice(BDTimes *bd, int indice)` — acessa time por índice;
+- `int carregarTimesCSV(BDTimes *bd, const char *nomeArquivo)` — carrega times do CSV;
+- `void imprimirTodosTimes(BDTimes *bd)` — imprime todos os times;
+- `void calcularClassificacao(BDTimes *bd, BDPartidas *bdPartidas)` — calcula stats com base nas partidas.
 
-A estrutura utiliza um vetor estático com capacidade para 10 times, pois o campeonato possui exatamente 10 clubes.
+**Implementação interna:**
+
+- Usa um array de ponteiros (`Time *times[MAX_TIMES]`) para armazenar times;
+- Cada time é alocado dinamicamente;
+- O `liberarBDTimes()` desaloca cada time e o próprio banco.
 
 ### TAD Partida
 
 Representa uma partida do campeonato.
 
-Armazena:
+Armazena internamente:
 
 - ID da partida;
 - ID do Time1;
@@ -227,24 +238,35 @@ Armazena:
 - Gols do Time1;
 - Gols do Time2.
 
-Também possui funções para:
+**Interface pública:**
 
-- Inicializar uma partida;
-- Imprimir os dados de uma partida.
+- `Partida *criarPartida(int id, int time1, int time2, int golsTime1, int golsTime2)` — aloca e inicializa;
+- `void liberarPartida(Partida *partida)` — libera a memória alocada;
+- Getters: `obterIdPartida()`, `obterTime1Partida()`, `obterGolsTime1Partida()`, etc.;
+- Utilitária: `imprimirPartida()`.
+
+A alocação dinâmica (`malloc`) é usada para criar instâncias de partida.
 
 ### TAD BDPartidas
 
-Gerencia a coleção de partidas carregadas dos arquivos CSV.
+Gerencia a coleção de partidas carregadas dos arquivos CSV (opaco, alocação dinâmica).
 
-Responsabilidades implementadas:
+**Interface pública:**
 
-- Carregar partidas do arquivo CSV;
-- Armazenar partidas em memória;
-- Consultar partidas por ID;
-- Imprimir todas as partidas;
-- Tratamento de quebras de linha ao carregar os registros do CSV.
+- `BDPartidas *criarBDPartidas(void)` — aloca e inicializa um novo banco de partidas;
+- `void liberarBDPartidas(BDPartidas *bd)` — libera todas as partidas armazenadas e o banco;
+- `int adicionarPartida(BDPartidas *bd, Partida *partida)` — adiciona uma partida já alocada;
+- `Partida* buscarPartidaPorId(BDPartidas *bd, int id)` — busca uma partida por ID;
+- `int obterQuantidadePartidas(BDPartidas *bd)` — retorna número de partidas cadastradas;
+- `Partida *obterPartidaPorIndice(BDPartidas *bd, int indice)` — acessa partida por índice;
+- `int carregarPartidasCSV(BDPartidas *bd, const char *nomeArquivo)` — carrega partidas do CSV;
+- `void imprimirTodasPartidas(BDPartidas *bd)` — imprime todas as partidas.
 
-A estrutura utiliza um vetor estático com capacidade para 100 partidas.
+**Implementação interna:**
+
+- Usa um array de ponteiros (`Partida *partidas[MAX_PARTIDAS]`) para armazenar partidas;
+- Cada partida é alocada dinamicamente;
+- O `liberarBDPartidas()` desaloca cada partida e o próprio banco.
 
 ### Função calcularClassificacao
 

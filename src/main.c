@@ -11,11 +11,21 @@
  */
 int main()
 {
-    BDTimes bd_times;
-    BDPartidas bd_partidas;
+    BDTimes *bd_times = criarBDTimes();
+    BDPartidas *bd_partidas = criarBDPartidas();
 
-    if (!carregarTimesCSV(&bd_times, "data/times.csv")) {
+    /* Verifica se alocação foi bem-sucedida */
+    if (bd_times == NULL || bd_partidas == NULL) {
+        printf(COR_VERMELHA "Erro ao alocar memoria!\n" COR_RESET);
+        if (bd_times != NULL) liberarBDTimes(bd_times);
+        if (bd_partidas != NULL) liberarBDPartidas(bd_partidas);
+        return 1;
+    }
+
+    if (!carregarTimesCSV(bd_times, "data/times.csv")) {
         printf(COR_VERMELHA "Erro ao carregar times!\n" COR_RESET);
+        liberarBDPartidas(bd_partidas);
+        liberarBDTimes(bd_times);
         return 1;
     }
 
@@ -26,12 +36,14 @@ int main()
      * - "data/partidas_parcial.csv" (45 partidas)
      * - "data/partidas_completo.csv" (90 partidas)
      */
-    if (!carregarPartidasCSV(&bd_partidas, "data/bd_partidas.csv")) {
+    if (!carregarPartidasCSV(bd_partidas, "data/bd_partidas.csv")) {
         printf(COR_VERMELHA "Erro ao carregar partidas!\n" COR_RESET);
+        liberarBDPartidas(bd_partidas);
+        liberarBDTimes(bd_times);
         return 1;
     }
 
-    calcularClassificacao(&bd_times, &bd_partidas);
+    calcularClassificacao(bd_times, bd_partidas);
 
     char opcao[10];
     int sair = 0;
@@ -56,11 +68,11 @@ int main()
 
         switch (opcao[0]) {
             case '1':
-                consultarTime(&bd_times);
+                consultarTime(bd_times);
                 break;
 
             case '2':
-                consultarPartidas(&bd_times, &bd_partidas);
+                consultarPartidas(bd_times, bd_partidas);
                 break;
 
             case '3':
@@ -76,7 +88,7 @@ int main()
                 break;
 
             case '6':
-                imprimirClassificacao(&bd_times);
+                imprimirClassificacao(bd_times);
                 break;
 
             case 'Q':
@@ -90,6 +102,10 @@ int main()
         }
 
     } while (!sair);
+
+    /* Libera memória antes de sair */
+    liberarBDPartidas(bd_partidas);
+    liberarBDTimes(bd_times);
 
     return 0;
 }

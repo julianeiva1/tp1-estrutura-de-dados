@@ -21,12 +21,10 @@ static int compararPrefixoIgnoreCase(const char *nome, const char *prefixo) {
  * Retorna "Nao encontrado" se ID invalido
  */
 char *buscarNomeTime(BDTimes *bd, int id) {
-    for (int i = 0; i < bd->quantidade; i++) {
-        if (bd->times[i].id == id) {
-            return bd->times[i].nome;
-        }
+    Time *time = buscarTimePorId(bd, id);
+    if (time != NULL) {
+        return (char *)obterNomeTime(time);
     }
-
     return "Nao encontrado";
 }
 
@@ -41,10 +39,12 @@ void consultarTime(BDTimes *bd) {
 
     /* Busca por prefixo ignorando maiúsculas/minúsculas
      * Exemplo: buscar "jav" encontra "JAVAlis" */
-    for (int i = 0; i < bd->quantidade; i++) {
-        if (compararPrefixoIgnoreCase(bd->times[i].nome, busca)) {
+    int qtdTimes = obterQuantidadeTimes(bd);
+    for (int i = 0; i < qtdTimes; i++) {
+        Time *time = obterTimePorIndice(bd, i);
+        if (time != NULL && compararPrefixoIgnoreCase(obterNomeTime(time), busca)) {
             encontrou = 1;
-            imprimirTime(bd->times[i]);
+            imprimirTime(time);
         }
     }
 
@@ -80,9 +80,15 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
 
     printf("\nID Time1 Time2\n");
 
-    for (int i = 0; i < bdPartidas->quantidade; i++) {
-        char *nomeMandante = buscarNomeTime(bd, bdPartidas->partidas[i].time1);
-        char *nomeVisitante = buscarNomeTime(bd, bdPartidas->partidas[i].time2);
+    int qtdPartidas = obterQuantidadePartidas(bdPartidas);
+    for (int i = 0; i < qtdPartidas; i++) {
+        Partida *partida = obterPartidaPorIndice(bdPartidas, i);
+        if (partida == NULL) {
+            continue;
+        }
+
+        char *nomeMandante = buscarNomeTime(bd, obterTime1Partida(partida));
+        char *nomeVisitante = buscarNomeTime(bd, obterTime2Partida(partida));
 
         /* Determina se a partida corresponde aos criterios da busca */
         int corresponde = 0;
@@ -106,10 +112,10 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
             encontrou = 1;
 
             printf("%d %s %d x %d %s\n",
-                   bdPartidas->partidas[i].id,
+                   obterIdPartida(partida),
                    nomeMandante,
-                   bdPartidas->partidas[i].golsTime1,
-                   bdPartidas->partidas[i].golsTime2,
+                   obterGolsTime1Partida(partida),
+                   obterGolsTime2Partida(partida),
                    nomeVisitante);
         }
     }

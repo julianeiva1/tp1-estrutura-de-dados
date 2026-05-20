@@ -2,28 +2,26 @@
 #define PARTIDA_H
 
 /*
- * TAD Partida: Representa uma partida do campeonato
- * Armazena ID de identificacao, IDs dos dois times e placar
+ * TAD Partida: Representa uma partida do campeonato (opaco)
+ * A definicao completa da struct esta em partida.c
+ * A interface expoe apenas getters e funcoes utilitarias
  */
-typedef struct {
-    int id;
-    int time1;
-    int time2;
-    int golsTime1;
-    int golsTime2;
-} Partida;
+typedef struct partida Partida;
 
-/* Inicializa uma nova partida com os dados fornecidos */
-void inicializarPartida(
-    Partida *partida,
-    int id,
-    int time1,
-    int time2,
-    int golsTime1,
-    int golsTime2
-);
+/* Cria e aloca uma nova partida com os dados fornecidos */
+Partida *criarPartida(int id, int time1, int time2, int golsTime1, int golsTime2);
+
+/* Libera memória alocada para a partida */
+void liberarPartida(Partida *partida);
+
+/* === GETTERS === */
+int obterIdPartida(Partida *partida);
+int obterTime1Partida(Partida *partida);
+int obterTime2Partida(Partida *partida);
+int obterGolsTime1Partida(Partida *partida);
+int obterGolsTime2Partida(Partida *partida);
 
 /* Imprime os dados basicos da partida, usando os IDs dos times */
-void imprimirPartida(Partida partida);
+void imprimirPartida(Partida *partida);
 
 #endif
