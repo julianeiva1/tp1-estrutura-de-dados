@@ -1,0 +1,7 @@
+# Arquivos de compilação
+*.o
+campeonato
+campeonato.exe
+
+# Configurações locais
+.vscode/
