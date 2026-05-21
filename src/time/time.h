@@ -4,7 +4,7 @@
 #define TAM_NOME_TIME 50
 
 /*
- * TAD Time: Representa um time do campeonato (opaco)
+ * TAD Time: Representa um time do campeonato 
  * A definicao completa da struct esta em time.c
  * A interface expoe apenas getters, setters e funcoes utilitarias
  */

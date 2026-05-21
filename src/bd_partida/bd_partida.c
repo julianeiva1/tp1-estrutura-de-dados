@@ -4,7 +4,7 @@
 #include "bd_partida.h"
 
 /*
- * Definicao opaca da struct BDPartidas (privada a este arquivo)
+ * Definicao da struct BDPartidas
  * Armazena um array de ponteiros para Partidas alocadas dinamicamente
  */
 struct bd_partidas {
