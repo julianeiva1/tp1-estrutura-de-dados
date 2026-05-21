@@ -39,6 +39,9 @@ int calcularSaldoGols(Time *time);
 /* Calcula pontos ganhos: vitorias*3 + empates */
 int calcularPontos(Time *time);
 
+/* Imprime o cabeçalho da tabela de times (ID, Nome, V, E, D, GM, GS, S, PG) */
+void imprimirCabecalhoTimes(void);
+
 /* Imprime as estatisticas do time em uma linha formatada */
 void imprimirTime(Time *time);
 

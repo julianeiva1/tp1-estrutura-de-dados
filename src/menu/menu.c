@@ -35,7 +35,8 @@ void consultarTime(BDTimes *bd) {
     printf("Digite o nome ou prefixo do time: ");
     scanf("%49s", busca);
 
-    printf("\nID Time V E D GM GS S PG\n");
+    printf("\n");
+    imprimirCabecalhoTimes();
 
     /* Busca por prefixo ignorando maiúsculas/minúsculas
      * Exemplo: buscar "jav" encontra "JAVAlis" */
@@ -78,7 +79,8 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
     printf("\nDigite o nome: ");
     scanf("%49s", busca);
 
-    printf("\nID Time1 Time2\n");
+    printf("\nID  %-15s %-7s %-15s\n", "Mandante", "Placar", "Visitante");
+    printf("---------------------------------------------\n");
 
     int qtdPartidas = obterQuantidadePartidas(bdPartidas);
     for (int i = 0; i < qtdPartidas; i++) {
@@ -111,7 +113,7 @@ void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas) {
         if (corresponde) {
             encontrou = 1;
 
-            printf("%d %s %d x %d %s\n",
+            printf("%-3d %-15s %d x %-3d %-15s\n",
                    obterIdPartida(partida),
                    nomeMandante,
                    obterGolsTime1Partida(partida),
@@ -142,6 +144,7 @@ void inserirPartida(void) {
 
 void imprimirClassificacao(BDTimes *bd) {
     printf(COR_VERDE "\nImprimindo classificacao...\n" COR_RESET);
-    printf("\nID Time V E D GM GS S PG\n");
+    printf("\n");
+    imprimirCabecalhoTimes();
     imprimirTodosTimes(bd);
 }

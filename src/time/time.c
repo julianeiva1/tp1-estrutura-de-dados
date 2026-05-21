@@ -111,8 +111,13 @@ int calcularPontos(Time *time) {
     return (time->vitorias * 3) + time->empates;
 }
 
+void imprimirCabecalhoTimes(void) {
+    printf("ID  %-15s %3s %3s %3s %3s %3s %4s %4s\n", "Time", "V", "E", "D", "GM", "GS", "S", "PG");
+    printf("--------------------------------------------------\n");
+}
+
 void imprimirTime(Time *time) {
-    printf("%d %-15s %d %d %d %d %d %d %d\n",
+    printf("%-3d %-15s %3d %3d %3d %3d %3d %4d %4d\n",
            time->id,
            time->nome,
            time->vitorias,
