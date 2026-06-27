@@ -23,12 +23,19 @@ void consultarTime(BDTimes *bd);
  */
 void consultarPartidas(BDTimes *bd, BDPartidas *bdPartidas);
 
-/* Stubs para funcionalidades nao implementadas nesta Parte I */
-void atualizarPartida(void);
-void removerPartida(void);
-void inserirPartida(void);
+/* Atualiza uma partida existente, recalculando estatisticas e persistindo os dados */
+void atualizarPartida(BDTimes *bd, BDPartidas *bdPartidas);
+
+/* Remove uma partida existente, com confirmacao, recalculando estatisticas e persistindo os dados */
+void removerPartida(BDTimes *bd, BDPartidas *bdPartidas);
+
+/* Insere uma nova partida com ID automatico, validando os dados e persistindo */
+void inserirPartida(BDTimes *bd, BDPartidas *bdPartidas);
 
 /* Imprime tabela de classificacao com todos os times e suas estatisticas */
-void imprimirClassificacao(BDTimes *bd);
+void imprimirClassificacao(BDTimes *bd, BDPartidas *bdPartidas);
+
+/* Persiste os dados em CSV para partidas e classificacao */
+void salvarDadosPersistidos(BDTimes *bd, BDPartidas *bdPartidas);
 
 #endif

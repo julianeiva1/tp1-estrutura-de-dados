@@ -2,9 +2,8 @@
 #define PARTIDA_H
 
 /*
- * TAD Partida: Representa uma partida do campeonato 
- * A definicao completa da struct esta em partida.c
- * A interface expoe apenas getters e funcoes utilitarias
+ * TAD Partida: Representa uma partida do campeonato.
+ * A definicao completa da struct esta em partida.c.
  */
 typedef struct partida Partida;
 
@@ -20,6 +19,9 @@ int obterTime1Partida(Partida *partida);
 int obterTime2Partida(Partida *partida);
 int obterGolsTime1Partida(Partida *partida);
 int obterGolsTime2Partida(Partida *partida);
+
+/* Atualiza o placar da partida */
+void atualizarPlacarPartida(Partida *partida, int golsTime1, int golsTime2);
 
 /* Imprime os dados basicos da partida, usando os IDs dos times */
 void imprimirPartida(Partida *partida);

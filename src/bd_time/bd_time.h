@@ -3,7 +3,7 @@
 
 #include "time.h"
 
-/* Campeonato possui exatamente 10 times (IDs 0-9) */
+/* Limite de times usado como referência para a estrutura interna, sem depender de um vetor fixo. */
 #define MAX_TIMES 10
 
 /*
@@ -23,7 +23,7 @@ void liberarBDTimes(BDTimes *bd);
 
 /* === INTERFACE PUBLICA === */
 
-/* Adiciona um time ao banco; retorna 1 se sucesso, 0 se banco cheio */
+/* Adiciona um time ao banco; retorna 1 em caso de sucesso e 0 em caso de erro */
 int adicionarTime(BDTimes *bd, Time *time);
 
 /* Busca e retorna ponteiro para um time pelo ID; retorna NULL se nao encontrado */

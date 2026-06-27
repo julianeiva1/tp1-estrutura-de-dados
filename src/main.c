@@ -5,16 +5,15 @@
 #include "menu.h"
 
 /*
- * Sistema de Gerenciamento de Campeonato de Futebol - Parte I
+ * Sistema de Gerenciamento de Campeonato de Futebol - Parte II
  * Carrega dados de times e partidas, calcula classificacao,
- * e oferece menu interativo para consultas.
+ * oferece menu interativo e persiste os dados em CSV.
  */
-int main()
+int main(void)
 {
     BDTimes *bd_times = criarBDTimes();
     BDPartidas *bd_partidas = criarBDPartidas();
 
-    /* Verifica se alocação foi bem-sucedida */
     if (bd_times == NULL || bd_partidas == NULL) {
         printf(COR_VERMELHA "Erro ao alocar memoria!\n" COR_RESET);
         if (bd_times != NULL) liberarBDTimes(bd_times);
@@ -29,13 +28,6 @@ int main()
         return 1;
     }
 
-    /*
-     * Arquivo padrao: data/bd_partidas.csv (90 partidas)
-     * Arquivos alternativos para teste:
-     * - "data/partidas_vazio.csv" (sem partidas)
-     * - "data/partidas_parcial.csv" (45 partidas)
-     * - "data/partidas_completo.csv" (90 partidas)
-     */
     if (!carregarPartidasCSV(bd_partidas, "data/bd_partidas.csv")) {
         printf(COR_VERMELHA "Erro ao carregar partidas!\n" COR_RESET);
         liberarBDPartidas(bd_partidas);
@@ -76,19 +68,19 @@ int main()
                 break;
 
             case '3':
-                atualizarPartida();
+                atualizarPartida(bd_times, bd_partidas);
                 break;
 
             case '4':
-                removerPartida();
+                removerPartida(bd_times, bd_partidas);
                 break;
 
             case '5':
-                inserirPartida();
+                inserirPartida(bd_times, bd_partidas);
                 break;
 
             case '6':
-                imprimirClassificacao(bd_times);
+                imprimirClassificacao(bd_times, bd_partidas);
                 break;
 
             case 'Q':
@@ -103,7 +95,6 @@ int main()
 
     } while (!sair);
 
-    /* Libera memória antes de sair */
     liberarBDPartidas(bd_partidas);
     liberarBDTimes(bd_times);
 

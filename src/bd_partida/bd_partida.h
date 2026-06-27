@@ -3,7 +3,7 @@
 
 #include "partida.h"
 
-/* Capacidade para 100 partidas (90 no campeonato + buffer para testes) */
+/* Limite usado como referência para a estrutura interna, sem depender de um vetor fixo. */
 #define MAX_PARTIDAS 100
 
 /*
@@ -23,8 +23,11 @@ void liberarBDPartidas(BDPartidas *bd);
 
 /* === INTERFACE PUBLICA === */
 
-/* Adiciona uma partida ao banco; retorna 1 se sucesso, 0 se banco cheio */
+/* Adiciona uma partida ao banco; retorna 1 em caso de sucesso e 0 em caso de erro */
 int adicionarPartida(BDPartidas *bd, Partida *partida);
+
+/* Remove a partida com o ID informado; retorna 1 se sucesso, 0 se nao encontrada */
+int removerPartidaPorId(BDPartidas *bd, int id);
 
 /* Busca e retorna ponteiro para uma partida pelo ID; retorna NULL se nao encontrada */
 Partida* buscarPartidaPorId(BDPartidas *bd, int id);

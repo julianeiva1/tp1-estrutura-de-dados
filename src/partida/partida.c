@@ -3,7 +3,7 @@
 #include "partida.h"
 
 /*
- * Definicao da struct Partida 
+ * Definicao da struct Partida.
  */
 struct partida {
     int id;
@@ -20,13 +20,13 @@ Partida *criarPartida(int id, int time1, int time2, int golsTime1, int golsTime2
     if (partida == NULL) {
         return NULL;
     }
-    
+
     partida->id = id;
     partida->time1 = time1;
     partida->time2 = time2;
     partida->golsTime1 = golsTime1;
     partida->golsTime2 = golsTime2;
-    
+
     return partida;
 }
 
@@ -54,6 +54,17 @@ int obterGolsTime1Partida(Partida *partida) {
 
 int obterGolsTime2Partida(Partida *partida) {
     return partida->golsTime2;
+}
+
+/* === SETTERS === */
+
+void atualizarPlacarPartida(Partida *partida, int golsTime1, int golsTime2) {
+    if (partida == NULL) {
+        return;
+    }
+
+    partida->golsTime1 = golsTime1;
+    partida->golsTime2 = golsTime2;
 }
 
 /* === FUNCOES UTILITARIAS === */

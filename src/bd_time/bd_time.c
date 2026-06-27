@@ -5,11 +5,20 @@
 #include "bd_partida.h"
 
 /*
- * Definicao da struct BDTimes
- * Armazena um array de ponteiros para Times alocados dinamicamente
+ * Nó interno da lista simplesmente encadeada de times.
+ * Cada nó aponta para um Time e para o próximo elemento da coleção.
+ */
+typedef struct no_time {
+    Time *time;
+    struct no_time *prox;
+} NoTime;
+
+/*
+ * Definicao da struct BDTimes.
+ * Agora ela armazena uma lista encadeada de times, preservando encapsulamento.
  */
 struct bd_times {
-    Time *times[MAX_TIMES];
+    NoTime *inicio;
     int quantidade;
 };
 
@@ -20,24 +29,27 @@ BDTimes *criarBDTimes(void) {
     if (bd == NULL) {
         return NULL;
     }
-    
+
+    bd->inicio = NULL;
     bd->quantidade = 0;
-    for (int i = 0; i < MAX_TIMES; i++) {
-        bd->times[i] = NULL;
-    }
-    
+
     return bd;
 }
 
 void liberarBDTimes(BDTimes *bd) {
-    if (bd != NULL) {
-        for (int i = 0; i < bd->quantidade; i++) {
-            if (bd->times[i] != NULL) {
-                liberarTime(bd->times[i]);
-            }
-        }
-        free(bd);
+    if (bd == NULL) {
+        return;
     }
+
+    NoTime *atual = bd->inicio;
+    while (atual != NULL) {
+        NoTime *prox = atual->prox;
+        liberarTime(atual->time);
+        free(atual);
+        atual = prox;
+    }
+
+    free(bd);
 }
 
 /* === INTERFACE PUBLICA === */
@@ -46,26 +58,40 @@ int adicionarTime(BDTimes *bd, Time *time) {
     if (bd == NULL || time == NULL) {
         return 0;
     }
-    
-    if (bd->quantidade >= MAX_TIMES) {
+
+    NoTime *novoNo = (NoTime *)malloc(sizeof(NoTime));
+    if (novoNo == NULL) {
         return 0;
     }
 
-    bd->times[bd->quantidade] = time;
-    bd->quantidade++;
+    novoNo->time = time;
+    novoNo->prox = NULL;
 
+    if (bd->inicio == NULL) {
+        bd->inicio = novoNo;
+    } else {
+        NoTime *ultimo = bd->inicio;
+        while (ultimo->prox != NULL) {
+            ultimo = ultimo->prox;
+        }
+        ultimo->prox = novoNo;
+    }
+
+    bd->quantidade++;
     return 1;
 }
 
-Time* buscarTimePorId(BDTimes *bd, int id) {
+Time *buscarTimePorId(BDTimes *bd, int id) {
     if (bd == NULL) {
         return NULL;
     }
-    
-    for (int i = 0; i < bd->quantidade; i++) {
-        if (bd->times[i] != NULL && obterIdTime(bd->times[i]) == id) {
-            return bd->times[i];
+
+    NoTime *atual = bd->inicio;
+    while (atual != NULL) {
+        if (atual->time != NULL && obterIdTime(atual->time) == id) {
+            return atual->time;
         }
+        atual = atual->prox;
     }
 
     return NULL;
@@ -82,16 +108,25 @@ Time *obterTimePorIndice(BDTimes *bd, int indice) {
     if (bd == NULL || indice < 0 || indice >= bd->quantidade) {
         return NULL;
     }
-    return bd->times[indice];
+
+    NoTime *atual = bd->inicio;
+    for (int i = 0; atual != NULL && i < indice; i++) {
+        atual = atual->prox;
+    }
+
+    if (atual == NULL) {
+        return NULL;
+    }
+
+    return atual->time;
 }
 
 int carregarTimesCSV(BDTimes *bd, const char *nomeArquivo) {
     if (bd == NULL || nomeArquivo == NULL) {
         return 0;
     }
-    
-    FILE *arquivo = fopen(nomeArquivo, "r");
 
+    FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo de times: %s\n", nomeArquivo);
         return 0;
@@ -99,43 +134,40 @@ int carregarTimesCSV(BDTimes *bd, const char *nomeArquivo) {
 
     char linha[100];
 
-    /* Ignora a primeira linha do CSV (cabecalho com nomes das colunas) */
+    /* Ignora a primeira linha do CSV (cabecalho com nomes das colunas). */
     if (fgets(linha, sizeof(linha), arquivo) == NULL) {
         fclose(arquivo);
         return 0;
     }
 
     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
-        /* strcspn remove quebras de linha (\r\n) do final da linha */
         linha[strcspn(linha, "\r\n")] = '\0';
 
         int id;
         char nome[TAM_NOME_TIME];
         char *virgula = strchr(linha, ',');
 
-        if (virgula != NULL) {
-            if (sscanf(linha, "%d", &id) == 1) {
-                strncpy(nome, virgula + 1, TAM_NOME_TIME - 1);
-                nome[TAM_NOME_TIME - 1] = '\0';
+        if (virgula != NULL && sscanf(linha, "%d", &id) == 1) {
+            strncpy(nome, virgula + 1, TAM_NOME_TIME - 1);
+            nome[TAM_NOME_TIME - 1] = '\0';
 
-                Time *time = criarTime(id, nome);
-                if (time == NULL) {
-                    printf("Erro ao alocar memoria para time.\n");
-                    fclose(arquivo);
-                    return 0;
-                }
-                
-                if (!adicionarTime(bd, time)) {
-                    printf("Limite maximo de times atingido.\n");
-                    liberarTime(time);
-                    break;
-                }
+            Time *time = criarTime(id, nome);
+            if (time == NULL) {
+                printf("Erro ao alocar memoria para time.\n");
+                fclose(arquivo);
+                return 0;
+            }
+
+            if (!adicionarTime(bd, time)) {
+                printf("Erro ao adicionar time na lista.\n");
+                liberarTime(time);
+                fclose(arquivo);
+                return 0;
             }
         }
     }
 
     fclose(arquivo);
-
     return 1;
 }
 
@@ -143,11 +175,13 @@ void imprimirTodosTimes(BDTimes *bd) {
     if (bd == NULL) {
         return;
     }
-    
-    for (int i = 0; i < bd->quantidade; i++) {
-        if (bd->times[i] != NULL) {
-            imprimirTime(bd->times[i]);
+
+    NoTime *atual = bd->inicio;
+    while (atual != NULL) {
+        if (atual->time != NULL) {
+            imprimirTime(atual->time);
         }
+        atual = atual->prox;
     }
 }
 
@@ -155,15 +189,17 @@ void calcularClassificacao(BDTimes *bd, BDPartidas *bdPartidas) {
     if (bd == NULL || bdPartidas == NULL) {
         return;
     }
-    
-    /* 1. Reseta todas as estatisticas dos times para garantir consistencia */
-    for (int i = 0; i < bd->quantidade; i++) {
-        if (bd->times[i] != NULL) {
-            zerarEstatisticasTime(bd->times[i]);
+
+    /* 1. Reseta todas as estatisticas dos times para garantir consistencia. */
+    NoTime *atualTime = bd->inicio;
+    while (atualTime != NULL) {
+        if (atualTime->time != NULL) {
+            zerarEstatisticasTime(atualTime->time);
         }
+        atualTime = atualTime->prox;
     }
 
-    /* 2. Processa cada partida */
+    /* 2. Processa cada partida e atualiza as estatisticas dos times. */
     int qtdPartidas = obterQuantidadePartidas(bdPartidas);
     for (int i = 0; i < qtdPartidas; i++) {
         Partida *partida = obterPartidaPorIndice(bdPartidas, i);
@@ -171,10 +207,9 @@ void calcularClassificacao(BDTimes *bd, BDPartidas *bdPartidas) {
             continue;
         }
 
-        /* Busca os dois times pelo ID */
         int time1Id = obterTime1Partida(partida);
         int time2Id = obterTime2Partida(partida);
-        
+
         Time *time1 = buscarTimePorId(bd, time1Id);
         Time *time2 = buscarTimePorId(bd, time2Id);
 
@@ -182,20 +217,15 @@ void calcularClassificacao(BDTimes *bd, BDPartidas *bdPartidas) {
             continue;
         }
 
-        /* 3. Atualiza gols marcados e sofridos
-         *    Time1 marcou golsTime1 e sofreu golsTime2
-         *    Time2 marcou golsTime2 e sofreu golsTime1
-         */
         int golsTime1 = obterGolsTime1Partida(partida);
         int golsTime2 = obterGolsTime2Partida(partida);
-        
+
         adicionarGolsMarcados(time1, golsTime1);
         adicionarGolsSofridos(time1, golsTime2);
 
         adicionarGolsMarcados(time2, golsTime2);
         adicionarGolsSofridos(time2, golsTime1);
 
-        /* 4. Atualiza vitorias, empates e derrotas */
         if (golsTime1 > golsTime2) {
             adicionarVitoria(time1);
             adicionarDerrota(time2);
